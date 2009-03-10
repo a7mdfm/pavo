@@ -58,22 +58,72 @@ package jp.co.genephics.pavo.pdf.parser.models
 			childList = new Array();
 		}
 
+		/**
+		 * PDFオブジェクトのタイプ('Outlines'固定)
+		 */
 		public var type:String;
+		
+		/**
+		 * しおり名
+		 */
 		public var title:String;
+		
+		/**
+		 * 親のアウトライン
+		 */
 		public var parent:String;
+		
+		/**
+		 * 同じレベルのアウトラインの1つ前にあたるアウトライン
+		 */
 		public var prev:String;
+		
+		/**
+		 * 同じレベルのアウトラインの1つ後にあたるアウトライン
+		 */
 		public var next:String;
+		
+		/**
+		 * 一番最初の子のアウトライン
+		 */
 		public var first:String;
+
+		/**
+		 * 一番最後の子のアウトライン
+		 */
 		public var last:String;
+		
+		/**
+		 * 開かれている子のアウトラインの総数
+		 */
 		public var count:String;
+		
+		/**
+		 * アクティブになったときに実行されるアクション
+		 */
 		public var a:String;
+		
+		/**
+		 * 参照する構造要素
+		 */
 		public var sE:String;
+		
 		public var c:String;
 		public var f:String;
 
+		/**
+		 * 子のアウトラインの配列
+		 */
 		public var childList:Array;
 
+		/**
+		 * このアウトラインが指し示すDestinationオブジェクトの間接参照
+		 */
 		public var dest:String;
+		
+		/**
+		 * このアウトラインが指し示すDestinationオブジェクト
+		 */
 		public var destElement:Destination;
 
 	}

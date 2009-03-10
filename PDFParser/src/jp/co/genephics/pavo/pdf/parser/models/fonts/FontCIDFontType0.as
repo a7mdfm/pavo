@@ -46,6 +46,11 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 {
 	import jp.co.genephics.pavo.pdf.parser.cmap.KeyValueStore;
 	
+	/**
+	 * FontCIDFontType0オブジェクト
+	 * 
+	 * @author genephics design, Inc.
+	 */
 	public class FontCIDFontType0 extends Font
 	{
 		public function FontCIDFontType0()
@@ -53,15 +58,54 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 			super();
 		}
 		
+		/**
+		 * フォントのPostScript名
+		 */
 		public var baseFont:String;
+		
+		/**
+		 * CIDFontの文字コレクションを定義するエントリが格納された辞書
+		 */
 		public var cIDSystemInfo:String;
+		
+		/**
+		 * CIDFontのグリフ幅以外のデフォルトメトリックスが記述されたフォントデスクリプタ
+		 */
 		public var fontDescriptor:String;
+		
+		/**
+		 * CIDFontのグリフのデフォルトの幅
+		 */
 		public var dW:String;
+		
+		/**
+		 * CIDFontにおけるグリフの幅
+		 */
 		public var w:String;
+		
+		/**
+		 * 縦書き用のデフォルトメトリックスを指定する2つの数値からなる配列
+		 */
 		public var dW2:String;
+		
+		/**
+		 * CIDFontのグリフに関する縦書き用メトリック
+		 */
 		public var w2:String;
+		
+		/**
+		 * CIDからグリフインデックスへのマッピングの指定
+		 */
 		public var cIDToGID:String;
+		
+		/**
+		 * CIDからグリフインデックスへのマッピングのバイナリ
+		 */
 		public var cIDToGIDObj:Object;
+		
+		/**
+		 * CIDをキーとしたマッピングのバイナリ情報の配列
+		 */
 		public var cIDToGIDMap:KeyValueStore;
 	}
 }

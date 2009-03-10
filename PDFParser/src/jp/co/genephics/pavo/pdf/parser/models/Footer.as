@@ -45,16 +45,26 @@ THE SOFTWARE.
 package jp.co.genephics.pavo.pdf.parser.models
 {
 	
+	/**
+	 * トレーラーとxref情報を表すクラス
+	 * 
+	 * @author genephics design, Inc.
+	 */
+	
 	public class Footer
 	{
 		public function Footer()
 		{
 		}
 
+		/**
+		 * xref情報の配列
+		 */
 		public var xrefList:Array;
 		
+		/**
+		 * トレーラー
+		 */
 		public var trailer:Trailer;
-		
-		
 	}
 }

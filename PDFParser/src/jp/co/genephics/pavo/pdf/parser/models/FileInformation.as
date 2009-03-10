@@ -44,16 +44,30 @@ THE SOFTWARE.
 
 package jp.co.genephics.pavo.pdf.parser.models
 {
+	/**
+	 * PDFファイルのメタ情報
+	 * 
+	 * @author genephics design, Inc.
+	 */
 	public class FileInformation
 	{
 		public function FileInformation()
 		{
 		}
 		
+		/**
+		 * PDFファイルへのパス
+		 */
 		public var path:String;
 		
+		/**
+		 * PDFファイル名
+		 */
 		public var fileName:String;
 		
+		/**
+		 * PDFファイルサイズ
+		 */
 		public var size:Number;
 	}
 }

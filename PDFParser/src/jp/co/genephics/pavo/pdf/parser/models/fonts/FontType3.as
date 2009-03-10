@@ -46,6 +46,11 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 {
 	import jp.co.genephics.pavo.pdf.parser.cmap.KeyValueStore;
 	
+	/**
+	 * FontType3オブジェクト
+	 * 
+	 * @author genephics design, Inc.
+	 */
 	public class FontType3 extends Font
 	{
 		public function FontType3()
@@ -53,19 +58,76 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 			super();
 		}
 		
+		/**
+		 * カレントリソース辞書のFont補助辞書で参照される名前
+		 */
 		public var name:String;
+
+		/**
+		 * グリフ座標系で表現された「フォント境界ボックス」を指定する矩形
+		 */
 		public var fontBBox:String;
+		
+		/**
+		 * グリフ空間からテキスト空間への変換を指定する6つの数値からなる配列
+		 */
 		public var fontMatrix:String;
+		
+		/**
+		 * 各キーが文字の名前で、キーに関連づけられる値が、
+		 * その文字のグリフを構築してペイントするコンテントストリームである辞書
+		 */
 		public var charProcs:String;
+		
+		/**
+		 * エンコーディングのバイナリ情報を指す名前オブジェクト
+		 * ※フォントの文字エンコーディングが内蔵エンコーディングと異なる場合のみ指定
+		 */
 		public var encoding:String;
+
+		/**
+		 * エンコーディングのバイナリ情報
+		 */
 		public var encodingObj:Object;
+
+		/**
+		 * Width配列に定義されている最初の文字コード
+		 */
 		public var firstChar:String;
+
+		/**
+		 * Width配列に定義されている最後の文字コード
+		 */
 		public var lastChar:String;
+
+		/**
+		 * firstCharからlastCharで定義されている文字のグリフ幅の配列
+		 */
 		public var widths:String;
+
+		/**
+		 * グリフ幅以外のフォントのメトリックスを記述するフォントデスクリプタ
+		 */
 		public var fontDescriptor:String;
+
+		/**
+		 * グリフ記述が必要とする名前付きリソースのリスト
+		 */
 		public var resources:String;
+		
+		/**
+		 * ToUnicodeCMapを指す名前オブジェクト
+		 */
 		public var toUnicode:String;
+
+		/**
+		 * ToUnicodeCMapのバイナリ情報
+		 */
 		public var toUnicodeObj:Object;
+
+		/**
+		 * CIDがキーとなっているToUnicodeCMap配列
+		 */
 		public var toUnicodeMap:KeyValueStore;
 	}
 }

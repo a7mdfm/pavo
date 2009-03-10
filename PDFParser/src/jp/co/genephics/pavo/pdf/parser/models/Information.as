@@ -44,6 +44,11 @@ THE SOFTWARE.
 
 package jp.co.genephics.pavo.pdf.parser.models
 {
+	/**
+	 * 文書情報辞書
+	 * 
+	 * @author genephics design, Inc.
+	 */
 	public class Information extends XRef
 	{
 		public static const TYPE:String = "Information";
@@ -52,22 +57,49 @@ package jp.co.genephics.pavo.pdf.parser.models
 		{
 		}
 		
+		/**
+		 * 文書のタイトル
+		 */
 		public var title:String;
 		
+		/**
+		 * 文書の作成者
+		 */
 		public var author:String;
 		
+		/**
+		 * 文書の主題
+		 */
 		public var subject:String;
 		
+		/**
+		 * 文書に関連するキーワード
+		 */
 		public var keywords:String;
 		
+		/**
+		 * 変換元のPDF作成アプリケーション名
+		 */
 		public var creator:String;
 		
+		/**
+		 * PDFへの変換を行ったアプリケーション名
+		 */
 		public var producer:String;
 		
+		/**
+		 * 作成日時
+		 */
 		public var creationDate:String;
 		
+		/**
+		 * 最終変更日時
+		 */
 		public var modDate:String;
 		
+		/**
+		 * トラッピング情報の有無
+		 */
 		public var trapped:String;
 		
 	}
