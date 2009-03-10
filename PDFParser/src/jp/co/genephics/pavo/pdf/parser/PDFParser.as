@@ -47,13 +47,15 @@ package jp.co.genephics.pavo.pdf.parser
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
-	import jp.co.genephics.pavo.pdf.parser.constants.Status;
 	import jp.co.genephics.pavo.pdf.parser.events.PDFEventDispatcher;
 	import jp.co.genephics.pavo.pdf.parser.events.PDFParserEvent;
 	import jp.co.genephics.pavo.pdf.parser.events.PDFParserFaultEvent;
 	import jp.co.genephics.pavo.pdf.parser.events.PDFParserProgressEvent;
 	import jp.co.genephics.pavo.pdf.parser.threads.PDFParserThread;
 	import jp.co.genephics.pavo.pdf.parser.threads.utils.ThreadUtil;
+	
+	import org.libspark.thread.EnterFrameThreadExecutor;
+	import org.libspark.thread.Thread;
 	
 	[Event(name="complete", type="jp.co.genephics.pavo.pdf.parser.events.PDFParserEvent")]
 	[Event(name="progress", type="jp.co.genephics.pavo.pdf.parser.events.PDFParserProgressEvent")]
@@ -76,6 +78,7 @@ package jp.co.genephics.pavo.pdf.parser
 		public function PDFParser(target:IEventDispatcher = null)
 		{
 			super(target);
+			Thread.initialize(new EnterFrameThreadExecutor());
 			__pdfEventDispathcer = PDFEventDispatcher.instance;
 		}
 		
