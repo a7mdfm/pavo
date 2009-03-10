@@ -62,8 +62,18 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 		private var _buffer:String = "";
 		private var _binaryBuffer:String = "";
 
+		/**
+		 * PDFのテキストオブジェクトを解析します。
+		 */
 		public function TextParser()
 		{
+			/**
+			 * オペレーター別処理メソッド2次元配列
+			 * 		Index  ・・・xxxyyyzzz(xxx --- オペレーター1桁目、yyy --- オペレーター2桁目、オペレーター3桁目)
+			 * 			第1要素・・・処理実行可否メソッド
+			 * 			第2要素・・・処理メソッド
+			 * 			第3要素・・・オペレーター
+			 */
 			_charCheckers = new Array();
 			_charCheckers[40000000] = [_isAscii, _ascii, true];
 			_charCheckers[41000000] = [_isAscii, _ascii, false];
@@ -112,6 +122,17 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 
 		}
 
+		/**
+		 * PDFのテキストオブジェクト(BT～ET)を解析し、Arrayにて返します。
+		 * 
+		 * @param target 解析対象のバイナリ(ByteArray)
+		 * @return オペレーター毎の2次元配列
+		 * 		Index  ・・・連番
+		 * 		第1要素・・・1次元配列
+		 * 			第1要素・・・オペレーター
+		 * 			第2要素・・・対象のバイナリを文字コードを基に文字列化したもの
+		 * 			第3要素・・・対象のバイナリ
+		 */
 		public function parse(target:ByteArray):Array
 		{
 			_array = [];
@@ -149,7 +170,9 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 					continue;
 				}
 				
-				// BDC, BMC, EMC, SCN, scn
+				// 以下オペレーター出現チェックは、「オペレーター+(ラインフィード or ニューライン or スペース)」となっている場合を出現したとみなす
+
+				// 3文字オペレーター出現チェック
 				if
 				(
 					(_currentIndex + 3) <= _target.length && _isCR_or_LF_or_SPACE(_currentIndex+3)
@@ -159,6 +182,7 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 				{
 					charChecker = _charCheckers[_target[_currentIndex] * 1000000 + _target[_currentIndex+1] * 1000 + _target[_currentIndex+2]];
 				}
+				// 2文字オペレーター出現チェック
 				if
 				(
 					!charChecker
@@ -182,17 +206,21 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 				{
 					charChecker = _charCheckers[_target[_currentIndex] * 1000000 + _target[_currentIndex+1] * 1000];
 				}
+				// 1文字オペレーター出現チェック( '('及び')'の場合は、その後に改行コードやスペース等の区切りが存在しないので、無条件でチェックメソッド実行)
 				if (!charChecker && (_target[_currentIndex] == 40 || _target[_currentIndex] == 41 || _isCR_or_LF_or_SPACE(_currentIndex+1)))
 				{
 					charChecker = _charCheckers[_target[_currentIndex] * 1000000];
 				}
 
+				// 処理実行可否チェック
 				if (charChecker && charChecker[0].call())
 				{
+					// 各オペレーター用の処理実行
 					charChecker[1].call(this, charChecker[2]);
 				}
 				else if (_startedText && !_isComment)
 				{
+					// オペレーター出現ではなかった場合、バッファに貯める
 					_buffer += String.fromCharCode(_target[_currentIndex]);
 					_binaryBuffer += _target[_currentIndex].toString(16);
 				}
@@ -202,6 +230,11 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			return _array;	
 		}
 
+		/**
+		 * コメント開始チェック
+		 * 
+		 * @return コメント開始ならばTRUE
+		 */
 		private function _isCommentChar():Boolean
 		{
 			if (_target[_currentIndex] == 37 && (_currentIndex == 0 || (_currentIndex >= 1 && _target[_currentIndex-1] != 92)) && !_startedAscii)
@@ -214,6 +247,11 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			}
 		}
 		
+		/**
+		 * コメント終了チェック
+		 * 
+		 * @return コメント終了ならばTRUE
+		 */
 		private function _isEndCommentChar():Boolean
 		{
 			if (_target[_currentIndex] == 10 && _isComment) // \n
@@ -226,6 +264,11 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			}
 		}
 
+		/**
+		 * ASCII文字列開始チェック
+		 * 
+		 * @return ASCII文字列開始ならばTRUE
+		 */
 		private function _isAscii():Boolean
 		{
 			if ((_currentIndex == 0 || (_currentIndex >= 1 && _target[_currentIndex-1] != 92)))
@@ -238,6 +281,11 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			}			
 		}
 
+		/**
+		 * ASCII文字列処理専用メソッド
+		 * 
+		 * @param asciiFlg ASCII文字列開始ならばTRUE、終了ならばFALSE
+		 */
 		private function _ascii(asciiFlg:Boolean):void
 		{
 			_startedAscii = asciiFlg;
@@ -245,17 +293,32 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			_binaryBuffer += _target[_currentIndex].toString(16);
 		}
 
+		/**
+		 * ASCII文字列非開始チェック
+		 * 
+		 * @return ASCII文字列が開始していなければTRUE
+		 */
 		private function _isNotStartedAscii():Boolean
 		{
 			return !_startedAscii;
 		}
 
+		/**
+		 * オペレーター「BT」専用メソッド
+		 * 
+		 * @param dummy NULL固定
+		 */
 		private function _startBT(dummy:Object):void
 		{
 			_startedText = true;
 			_currentIndex++;
 		}
 
+		/**
+		 * オペレーター「ET」専用メソッド
+		 * 
+		 * @param dummy NULL固定
+		 */
 		private function _endET(dummy:Object):void
 		{
 			_startedText = false;
@@ -264,16 +327,31 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			_binaryBuffer = "";
 		}
 		
+		/**
+		 * BT-ET間処理中チェックメソッド
+		 * 
+		 * @return BT-ET間処理中であればTRUE
+		 */
 		private function _isStartedText():Boolean
 		{
 			return (_startedText && !_startedAscii);
 		}
 
+		/**
+		 * 読み込んだバイナリがラインフィード又はニューライン又はスペースかをチェック
+		 * 
+		 * @return ラインフィード又はニューライン又はスペースであればTRUE
+		 */
 		private function _isCR_or_LF_or_SPACE(targetIndex:int):Boolean
 		{
 			return (_target[targetIndex] == 10 || _target[targetIndex] == 13 || _target[targetIndex] == 32) ? true : false;
 		}
 
+		/**
+		 * テキストオブジェクトで処理対象となるオペレーター「Tf、Tm、TJ、Tj、Tc、Tw、TD、Td」専用メソッド
+		 * 
+		 * @param operator 対象オペレーター
+		 */
 		private function _textBlock(operator:String):void
 		{
 			_array.push(new Array(operator, _buffer, _binaryBuffer));
@@ -282,6 +360,11 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 			_currentIndex += operator.length;
 		}
 
+		/**
+		 * テキストオブジェクトで処理対象外となるオペレーター専用メソッド
+		 * 
+		 * @param operator 対象オペレーター
+		 */
 		private function _textBlock_NotApplicable(operator:String):void
 		{
 			_buffer = "";
