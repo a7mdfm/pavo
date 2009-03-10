@@ -48,6 +48,11 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 	
 	import jp.co.genephics.pavo.pdf.parser.cmap.KeyValueStore;
 	
+	/**
+	 * FontType0オブジェクト
+	 * 
+	 * @author genephics design, Inc.
+	 */
 	public class FontType0 extends Font
 	{
 		public function FontType0()
@@ -56,13 +61,46 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 			descendantFontList = new Vector.<Font>();
 		}
 		
+		
+		/**
+		 * フォントのPostScript名
+		 */
 		public var baseFont:String;
+
+		/**
+		 * エンコーディングのバイナリ情報を指す名前オブジェクト
+		 * ※フォントの文字エンコーディングが内蔵エンコーディングと異なる場合のみ指定
+		 */
 		public var encoding:String;
+		
+		/**
+		 * エンコーディングのバイナリ情報
+		 */
 		public var encodingObj:Object;
+		
+		/**
+		 * フォントのサブセットのバイナリ情報を指す名前オブジェクト
+		 */
 		public var descendantFonts:String;
+		
+		/**
+		 * フォントのサブセットリスト
+		 */
 		public var descendantFontList:Vector.<Font>;
+
+		/**
+		 * ToUnicodeCMapを指す名前オブジェクト
+		 */
 		public var toUnicode:String;
+		
+		/**
+		 * ToUnicodeCMapのバイナリ情報
+		 */
 		public var toUnicodeObj:Object;
+		
+		/**
+		 * CIDがキーとなっているToUnicodeCMap配列
+		 */
 		public var toUnicodeMap:KeyValueStore;
 	}
 }

@@ -46,6 +46,11 @@ package jp.co.genephics.pavo.pdf.parser.models
 {
 	import flash.utils.Dictionary;
 	
+	/**
+	 * 名前ツリーノード辞書
+	 * 
+	 * @author genephics design, Inc.
+	 */
 	public class Dests extends XRef
 	{
 		public function Dests()
@@ -53,12 +58,31 @@ package jp.co.genephics.pavo.pdf.parser.models
 			childList = [];
 		}
 		
+		/**
+		 * このノードの中間の子に対する間接参照の配列
+		 */
 		public var kids:String;
+		
+		/**
+		 * リーフノードのNames配列又は
+		 * 中間ノードの子孫である全リーフノードのNames配列に含まれる
+		 * 最小及び最大のキーを指定する
+		 */
 		public var limits:String;
+		
+		/**
+		 * 名前ツリーの配列
+		 */
 		public var names:String;
 		
+		/**
+		 * この名前にぶら下がっているツリー
+		 */
 		public var childList:Array;
 		
+		/**
+		 * 名前がキーとなっているDictionary
+		 */
 		public var namesDictionary:Dictionary;
 	}
 }
