@@ -77,7 +77,6 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 		private var _converter:CMapConverter = CMapConverter.instance;
 		private var _textCounter:int = 0;
 		private var _regExpForCmap:RegExp = /(?!5c)28(.*?)(?<!5c)29/g;
-		private var _regExp:RegExp = /\((.+?)\)|\<(.+?)\>/g;
 		
 		/**
 		 * コンストラクタ
@@ -127,7 +126,8 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			var key:String = contentsText[0];
 			var value:String = contentsText[1];
 			var binaryValue:String = contentsText[2];
-			
+			var _regExp:RegExp = /\((.+?)\)|\<(.+?)\>/g;
+		
 			if (key == "TJ" || key == "Tj")
 			{
 				var result:Array = _regExp.exec(value);
