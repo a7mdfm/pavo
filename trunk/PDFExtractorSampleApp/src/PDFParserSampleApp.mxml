@@ -85,7 +85,7 @@
 		
 		private function _progressHandler(event:PDFParserProgressEvent):void
 		{
-			text.text += event.message + "\n";
+			text.text = event.message + "\n";
 		}
 		
 		private function _faultHandler(event:PDFParserFaultEvent):void
