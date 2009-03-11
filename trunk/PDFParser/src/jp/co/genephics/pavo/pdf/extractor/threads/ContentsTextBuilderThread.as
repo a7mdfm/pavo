@@ -126,7 +126,8 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			var key:String = contentsText[0];
 			var value:String = contentsText[1];
 			var binaryValue:String = contentsText[2];
-			var regExp:RegExp = /\((.+?)\)|\<(.+?)\>/g;
+//			var regExp:RegExp = /\((.+?)\)|\<(.+?)\>/g;
+			var regExp:RegExp = /\((.+?)(?<!\\)\)|\<(.+?)\>/g;
 		
 			if (key == "TJ" || key == "Tj")
 			{
@@ -138,7 +139,10 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 					{
 						if (_converter.isDefaultCmap())
 						{
-							section.body += result[1];
+							var str:String = result[1] as String;
+							str = str.replace("\\)", ")");
+							str = str.replace("\\(", "(");
+							section.body += str;
 						}
 						else
 						{
@@ -215,6 +219,46 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			for (var i:int = 0; i < len; i += length)
 			{
 				tmp = target.substr(i,length);
+				
+				if (tmp == "5c" && (target.length - length >= i+length))
+				{
+					var str:String;
+					
+					switch (target.substr(i+length, length))
+					{
+						case "6e":// n
+							str = "\n";
+							break;
+						case "72":// r
+							str = "\r";
+							break;
+						case "74":// t
+							str = "\t";
+							break;
+						case "62":// b
+							str = "\b";
+							break;
+						case "66":// f
+							str = "\f";
+							break;
+						case "28":// (
+							str = "(";
+							break;
+						case "29":// )
+							str = ")";
+							break;
+						case "5c":// \
+							str = "\\";
+							break;
+					}
+					if (str)
+					{
+						retVal.push(str);
+						i += length;
+						continue;
+					}
+				}
+				
 				cod = _getUnicodeString(tmp);
 				
 				if (cod && cod.length > 0)
