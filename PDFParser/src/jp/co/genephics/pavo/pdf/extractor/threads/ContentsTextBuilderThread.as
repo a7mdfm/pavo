@@ -161,6 +161,7 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 						section.body = section.body.concat(tmp2);
 					}
 					
+					// \888(エスケープシーケンスに続いて8進数の3桁の場合は、今のところ変換方法が分からないので、スペースに変換)
 					section.body = section.body.replace(/\\\d\d\d/g, " ");
 
 					result = regExp.exec(value);
