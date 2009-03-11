@@ -126,11 +126,11 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			var key:String = contentsText[0];
 			var value:String = contentsText[1];
 			var binaryValue:String = contentsText[2];
-			var _regExp:RegExp = /\((.+?)\)|\<(.+?)\>/g;
+			var regExp:RegExp = /\((.+?)\)|\<(.+?)\>/g;
 		
 			if (key == "TJ" || key == "Tj")
 			{
-				var result:Array = _regExp.exec(value);
+				var result:Array = regExp.exec(value);
 				
 				while (result)
 				{
@@ -161,7 +161,7 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 						section.body = section.body.concat(tmp2);
 					}
 					
-					result = _regExp.exec(value);
+					result = regExp.exec(value);
 				}
 			}
 			else if (key == "Tm")
