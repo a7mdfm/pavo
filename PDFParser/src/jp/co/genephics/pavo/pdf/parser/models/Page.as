@@ -60,144 +60,34 @@ package jp.co.genephics.pavo.pdf.parser.models
 			contentsTextArray = [];
 		}
 
-		/**
-		 * PDFオブジェクトのタイプ('Page'固定)
-		 */		
 		public var type:String;
-		
-		/**
-		 * 親のPageオブジェクト
-		 */
 		public var parent:String;
-		
-		/**
-		 * 最終更新日時
-		 */
 		public var lastModified:String;
-		
-		/**
-		 * リソース辞書
-		 */
 		public var resources:String;
-		
-		/**
-		 * 出力可能最大領域
-		 */
 		public var mediaBox:String;
-		
-		/**
-		 * ページの内容が表示又は印刷されるときにクリッピングされる領域
-		 */
 		public var cropBox:String;
-		
-		/**
-		 * 制作環境での出力時にページの内容がクリッピングされることになる領域
-		 */
 		public var bleedBox:String;
-		
-		/**
-		 * トリミング後の完成ページで意図する寸法
-		 */
 		public var trimBox:String;
-		
-		/**
-		 * 作成社が意図するページの意味がある内容の範囲
-		 */
 		public var artBox:String;
-		
-		/**
-		 * さまざまなページ境界を画面上に表示するのに使われる、色その他のビジュアル要素
-		 */
 		public var boxColorInfo:String;
-		
-		/**
-		 * ページのコンテンツ。このエントリがない場合は、ページは空
-		 */
 		public var contents:String;
-		
-		/**
-		 * 表示または印刷時に回転させる角度(時計回り)
-		 */
 		public var rotate:String;
-		
-		/**
-		 * 透過イメージングモデルで使用されるページグループの属性を指定する辞書
-		 */
 		public var group:String;
-		
-		/**
-		 * 	サムネイル画像を定義するストリーム
-		 */
 		public var thumb:String;
-		
-		/**
-		 * 	ページに出現するアーティクルビーズ
-		 */
 		public var b:String;
-		
-		/**
-		 * 	プレゼンテーション中、ビューアプリケーションが自動でページ替えするまでの秒単位の最長時間
-		 */
 		public var dur:String;
-		
-		/**
-		 * プレゼンテーション中、ページ替え時に使用されるエフェクト
-		 */
 		public var trans:String;
-		
-		/**
-		 * ページに関連づけられた注釈
-		 */ 
 		public var annots:String;
-		
-		/**
-		 * ページが開かれたり閉じられたりしたときに実行される追加アクション
-		 */
 		public var aA:String;
-		
-		/**
-		 * ページのメタデータを含むメタデータストリーム
-		 */
 		public var metadata:String;
-		
-		/**
-		 * ページに関連づけられたページピース辞書
-		 */ 
 		public var pieceInfo:String;
-		
-		/**
-		 * 構造ペアレントツリーにおけるページのエントリのキー
-		 */
 		public var structParents:String;
-		
-		/**
-		 * 識別子
-		 */  
 		public var iD:String;
-		
-		/**
-		 * ページの優先ズーム倍率
-		 */
 		public var pZ:String;
-		
-		/**
-		 * 色分解辞書
-		 */
 		public var separationInfo:String;
 		
-		/**
-		 * リソースオブジェクト
-		 */
 		public var resource:Resource;
-		
-		/**
-		 * 設定されているアウトライン
-		 */
 		public var outlines:Vector.<Outline>;
-		
-		/**
-		 * ページ内テキスト
-		 */ 
 		public var contentsTextArray:Array;
 	}
 }

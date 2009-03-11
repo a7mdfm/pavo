@@ -52,109 +52,26 @@ package jp.co.genephics.pavo.pdf.parser.models
 	public class Root extends XRef
 	{
 		
-		/**
-		 * この辞書が記述するPDFオブジェクトのタイプ
-		 */		
 		public var type:String;
-
-		/**
-		 * PDFのバージョン
-		 */		
 		public var version:String;
-
-		/**
-		 * ページツリーのルートであるページツリーノード
-		 */		
 		public var pages:String;
-
-		/**
-		 * キーにページインデックス、値にページラベル辞書を持つ数値ツリー
-		 */		
 		public var pageLabels:String;
-
-		/**
-		 * 文書の名前
-		 */		
 		public var names:String;
-
-		/**
-		 * 名前に対応するあて先
-		 */		
 		public var dests:String;
-
-		/**
-		 * 文書の画面表示方法を定義する
-		 */		
 		public var viewerPreferences:String;
-
-		/**
-		 * 文書を開いたときに使用されるレイアウト
-		 */		
 		public var pageLayout:String;
-
-		/**
-		 * 文書を開いたときの表示方法
-		 */		
 		public var pageMode:String;
-
-		/**
-		 * 文書のアウトライン階層のルート
-		 */		
 		public var outlines:String;
-
-		/**
-		 * 文書のアーティクル・スレッド辞書の配列
-		 */		
 		public var threads:String;
-
-		/**
-		 * 文書が開かれたときに表示されるあて先、または実行されるアクション
-		 */		
 		public var openAction:String;
-
-		/**
-		 * トリガイベントの結果として実行される追加アクションの辞書
-		 */		
 		public var aA:String;
-
-		/**
-		 * 文書レベルのURIアクションの情報を含む
-		 */		
 		public var uRI:String;
-
-		/**
-		 * 文書の対話フォーム辞書
-		 */		
 		public var acroForm:String;
-
-		/**
-		 * 文書のメタデータを含む
-		 */		
 		public var metadata:String;
-
-		/**
-		 * 文書の構造ツリーのルート
-		 */		
 		public var structTreeRoot:String;
-
-		/**
-		 * 文書のTagged PDF表現の使い方を含むマーク情報辞書
-		 */		
 		public var markInfo:String;
-
-		/**
-		 * 文書中のテキストで使われている自然言語
-		 */		
 		public var lang:String;
-
-		/**
-		 * Acrobat Web Capture(AcroSpider)プラグインが使用する、状態を含むウェブキャプチャ情報
-		 */		
 		public var spiderInfo:String;
-
-		/**
-		 * 文書が描画される出力デバイスの色の特性を定義する出力目的辞書の配列
-		 */		
 		public var outputIntents:String;
 	}
 }

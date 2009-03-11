@@ -59,49 +59,14 @@ package jp.co.genephics.pavo.pdf.parser.models
 			fonts = new Dictionary();
 		}
 		
-		/**
-		 * リソース名を「グラフィックス状態パラメータ辞書」にマップする
-		 */
 		public var extGState:String;
-
-		/**
-		 * リソース名をデバイス依存のカラースペースまたはカラースペースを記述する配列にマップする
-		 */
 		public var colorSpace:String;
-
-		/**
-		 * リソース名をパターンオブジェクトにマップする
-		 */
 		public var pattern:String;
-
-		/**
-		 * リソース名をシェーディング辞書にマップする
-		 */
 		public var shading:String;
-
-		/**
-		 * リソース名を外部オブジェクトにマップする
-		 */
 		public var xObject:String;
-
-		/**
-		 * リソース名をフォント辞書にマップする
-		 */
 		public var font:String;
-
-		/**
-		 * 定義済みプロシージャセット名の配列
-		 */
 		public var procSet:String;
-
-		/**
-		 * リソース名をマーク付きコンテント用のプロパティリスト辞書にマップする
-		 */
 		public var properties:String;
-
-		/**
-		 * フォントオブジェクト
-		 */
 		public var fonts:Dictionary;
 	}
 }

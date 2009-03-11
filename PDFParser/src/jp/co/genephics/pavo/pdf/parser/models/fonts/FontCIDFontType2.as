@@ -44,11 +44,6 @@ THE SOFTWARE.
 
 package jp.co.genephics.pavo.pdf.parser.models.fonts
 {
-	/**
-	 * FontCIDFontType2オブジェクト
-	 * 
-	 * @author genephics design, Inc.
-	 */
 	public class FontCIDFontType2 extends FontCIDFontType0
 	{
 		public function FontCIDFontType2()

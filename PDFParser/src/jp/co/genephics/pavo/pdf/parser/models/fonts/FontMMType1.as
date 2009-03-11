@@ -44,11 +44,6 @@ THE SOFTWARE.
 
 package jp.co.genephics.pavo.pdf.parser.models.fonts
 {
-	/**
-	 * FontMMType1オブジェクト
-	 * 
-	 * @author genephics design, Inc.
-	 */
 	public class FontMMType1 extends FontType1
 	{
 		public function FontMMType1()

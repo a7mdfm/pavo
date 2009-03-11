@@ -44,11 +44,6 @@ THE SOFTWARE.
 
 package jp.co.genephics.pavo.pdf.parser.models.fonts
 {
-	/**
-	 * FontTrueTypeオブジェクト
-	 * 
-	 * @author genephics design, Inc.
-	 */
 	public class FontTrueType extends FontType1
 	{
 		public function FontTrueType()

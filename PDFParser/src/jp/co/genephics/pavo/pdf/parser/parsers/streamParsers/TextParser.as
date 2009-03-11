@@ -49,11 +49,6 @@ package jp.co.genephics.pavo.pdf.parser.parsers.streamParsers
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
 	
-	/**
-	 * PDFのテキストオブジェクトをパースするクラス
-	 * 
-	 * @author genephics design, Inc.
-	 */
 	public class TextParser
 	{
 		private var _startedAscii:Boolean = false;

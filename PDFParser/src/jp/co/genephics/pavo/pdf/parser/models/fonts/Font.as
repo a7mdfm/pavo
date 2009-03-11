@@ -46,11 +46,6 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 {
 	import jp.co.genephics.pavo.pdf.parser.models.XRef;
 	
-	/**
-	 * Fontオブジェクト(全てのフォントクラスのスーパークラス)
-	 * 
-	 * @author genephics design, Inc.
-	 */
 	public class Font extends XRef
 	{
 		public function Font()
@@ -58,14 +53,7 @@ package jp.co.genephics.pavo.pdf.parser.models.fonts
 			super();
 		}
 		
-		/**
-		 * PDFオブジェクトのタイプ('Font'固定)
-		 */
 		public var type:String;
-		
-		/**
-		 * フォントのタイプ
-		 */
 		public var subType:String;
 	}
 }

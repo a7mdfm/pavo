@@ -51,24 +51,9 @@ package jp.co.genephics.pavo.pdf.parser.models
 	 */
 	public class Pages extends XRef
 	{
-		/**
-		 * PDFオブジェクトのタイプ('Pages'固定)
-		 */
 		public var type:String;
-		
-		/**
-		 * 親のPagesオブジェクト
-		 */
 		public var parent:String;
-		
-		/**
-		 * 子のPagesオブジェクト
-		 */
 		public var kids:String;
-		
-		/**
-		 * 子の数
-		 */
 		public var count:String;
 
 		public var childList:Array;

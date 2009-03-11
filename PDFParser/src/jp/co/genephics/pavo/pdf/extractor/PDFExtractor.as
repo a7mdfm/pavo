@@ -56,7 +56,7 @@ package jp.co.genephics.pavo.pdf.extractor
 	import jp.co.genephics.pavo.pdf.parser.events.PDFParserEvent;
 	import jp.co.genephics.pavo.pdf.parser.threads.utils.ThreadUtil;
 	
-	[Event(name="complete", type="jp.co.genephics.pavo.pdf.extractor.events.PDFExtractorEvent")]
+	[Event(name="complete", type="jp.co.genephics.pavo.pdf.parser.events.ADBPDFParserEvent")]
 
 	/**
 	 * PDFExtractor
