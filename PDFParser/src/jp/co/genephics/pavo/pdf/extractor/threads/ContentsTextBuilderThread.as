@@ -161,6 +161,8 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 						section.body = section.body.concat(tmp2);
 					}
 					
+					section.body = section.body.replace(/\\\d\d\d/g, " ");
+
 					result = regExp.exec(value);
 				}
 			}
