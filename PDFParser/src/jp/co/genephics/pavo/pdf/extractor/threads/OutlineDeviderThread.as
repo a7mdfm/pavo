@@ -48,12 +48,14 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 	
 	import jp.co.genephics.events.MixInEventDispatcher;
 	import jp.co.genephics.pavo.pdf.extractor.events.PDFExtractorEvent;
+	import jp.co.genephics.pavo.pdf.extractor.models.Literal;
 	import jp.co.genephics.pavo.pdf.extractor.models.PDFOutlineEntity;
 	import jp.co.genephics.pavo.pdf.parser.constants.Status;
-	import jp.co.genephics.pavo.pdf.parser.events.PDFParserProgressEvent;
 	import jp.co.genephics.pavo.pdf.parser.models.Outline;
 	import jp.co.genephics.pavo.pdf.parser.models.Page;
 	import jp.co.genephics.pavo.pdf.parser.threads.ThreadBase;
+	import jp.co.genephics.pavo.pdf.parser.utils.DestinationUtil;
+	import jp.co.genephics.utils.StringUtil;
 
 	/**
 	 * アウトラインの位置を基準にPDF文書情報を区切ります。
@@ -66,7 +68,8 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 		private var _pageList:Array;
 		private var _pageLength:int;
 		private var _pageCounter:int;
-		private var _section:PDFOutlineEntity;
+		
+		private var _literalVector:Vector.<Literal>;
 		
 		/**
 		 * コンストラクタ
@@ -82,14 +85,11 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			_pageLength = _pageList.length;
 			
 			_pageCounter = 0;
-			_section = new PDFOutlineEntity();
-			_section.page = 1;
-			_section.body = "";
-			_sectionArray.push(_section);
+			_literalVector = new Vector.<Literal>();
 		}
 		
 		/**
-		 * スレッド実行関数。すべてのページを処理するまで再帰的に実行されます。
+		 * スレッド実行関数。ページ内の文字列を取り出します。すべてのページを処理するまで再帰的に実行されます。
 		 */
 		override protected function run():void
 		{
@@ -97,10 +97,23 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			error(Error, __errorHandler);
 			
 			var page:Page = _pageList[_pageCounter] as Page;
-			page.outlines.sort(_outlinesSortFunction);
+
+			// Outlinesを_literalVectorにまず格納
+			for each (var outline:Outline in page.outlines)
+			{
+				var literal:Literal = new Literal();
+				literal.isOutline = true;
+				literal.literal = outline.title;
+				literal.page = _pageCounter;
+				literal.sortKey = 
+						int(StringUtil.zeroPaddingLeft(_pageCounter.toString(), 4) + 
+							StringUtil.zeroPaddingLeft((DestinationUtil.MAX_TOP - outline.destElement.top).toString(), 4) + 
+							StringUtil.zeroPaddingLeft(outline.destElement.left.toString(), 4));
+				_literalVector.push(literal);
+			}
 			
 			// ContentsTextループ
-			var contentsTextBuilderThread:ContentsTextBuilderThread = new ContentsTextBuilderThread(_sectionArray, page, _pageCounter);
+			var contentsTextBuilderThread:ContentsTextBuilderThread = new ContentsTextBuilderThread(_literalVector, page, _pageCounter);
 			contentsTextBuilderThread.start();
 			contentsTextBuilderThread.join();
 			
@@ -112,27 +125,80 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			}
 			else
 			{
-				__next(_complete);
+				__next(_sort);
 			}
 		}
 		
 		/**
 		 * @private
+		 * 文字列をページ番号、Y座標、X座標ごとにソートします
+		 */
+		private function _sort():void
+		{
+			_literalVector = _literalVector.sort(_literalSortFunc);
+			
+			__next(_buildByOutlines);
+		}
+		
+		/**
+		 * x が y の前に表示されるソート順の場合は負の数。
+		 * x と y が等しい場合は 0。
+		 * x が y の後に表示されるソート順の場合は正の数。
+		 */
+		private function _literalSortFunc(x:Literal, y:Literal):Number
+		{
+			if (x.sortKey < y.sortKey)
+			{
+				return -1;
+			}
+			else if (x.sortKey > y.sortKey)
+			{
+				return 1;
+			}
+			return 0;
+		}
+		
+		/**
+		 * @private
+		 * 文字列をOutline単位で結合し、Outline単位の配列にします。
+		 */
+		private function _buildByOutlines():void
+		{
+			// Outline単位で文字列を組み立てる
+			
+			var tmpValue:String = "";
+			var entity:PDFOutlineEntity = new PDFOutlineEntity();
+			
+			for each (var literal:Literal in _literalVector)
+			{
+				if (literal.isOutline)
+				{
+					entity.body = tmpValue;
+					tmpValue = "";
+					_sectionArray.push(entity);
+					entity = new PDFOutlineEntity();
+					entity.name = literal.literal;
+					entity.page = literal.page;
+				}
+				else
+				{
+					tmpValue += literal.literal;
+				}
+			}
+			
+			entity.body = tmpValue;
+			_sectionArray.push(entity);
+			
+			__next(_complete);
+		}
+		
+		/**
+		 * @private
+		 * 完了イベントをディスパッチします。
 		 */
 		private function _complete():void
 		{
 			this.dispatchEvent(new PDFExtractorEvent(PDFExtractorEvent.COMPLETE));
 		}
-
-		/**
-		 * @private
-		 */
-		private function _outlinesSortFunction(x:Outline, y:Outline):Number
-		{
-			if (x.destElement.top > y.destElement.top) return -1;
-			if (x.destElement.top < y.destElement.top) return 1;
-			return 0;
-		}
-
 	}
 }

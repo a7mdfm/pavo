@@ -46,11 +46,12 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 {
 	import __AS3__.vec.Vector;
 	
-	import jp.co.genephics.pavo.pdf.extractor.models.PDFOutlineEntity;
+	import jp.co.genephics.pavo.pdf.extractor.models.Literal;
 	import jp.co.genephics.pavo.pdf.parser.cmap.CMapConverter;
 	import jp.co.genephics.pavo.pdf.parser.constants.Status;
 	import jp.co.genephics.pavo.pdf.parser.models.Page;
 	import jp.co.genephics.pavo.pdf.parser.threads.ThreadBase;
+	import jp.co.genephics.pavo.pdf.parser.utils.DestinationUtil;
 	import jp.co.genephics.pavo.pdf.parser.utils.LigatureUtil;
 	import jp.co.genephics.utils.StringUtil;
 	
@@ -67,12 +68,10 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 		// ----------------------------------------------------
 
 		private static const LUMP_COUNT:int = 32;
-		private var _sectionArray:Vector.<PDFOutlineEntity>;
-		private var _section:PDFOutlineEntity;
+		private var _literalArray:Vector.<Literal>;
 		private var _page:Page;
 		private var _yIndex:int = int.MAX_VALUE;
-		private var _outlinesNum:int;
-		private var _currentOutline:int = -1;
+		private var _xIndex:int = 0;
 		private var _pageCounter:int;
 		private var _converter:CMapConverter = CMapConverter.instance;
 		private var _textCounter:int = 0;
@@ -81,14 +80,13 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 		/**
 		 * コンストラクタ
 		 */
-		public function ContentsTextBuilderThread(sectionArray:Vector.<PDFOutlineEntity>, page:Page, pageCounter:int)
+		public function ContentsTextBuilderThread(literalArray:Vector.<Literal>, page:Page, pageCounter:int)
 		{
 			super();
 			__status = Status.STATUS_CONVERT_CHARCODE;
 			
-			_sectionArray = sectionArray;
+			_literalArray = literalArray;
 			_page = page;
-			_outlinesNum = page.outlines.length;
 			_pageCounter = pageCounter;
 		}
 		
@@ -107,7 +105,7 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 				var contentsText:Array = _page.contentsTextArray[_textCounter];
 				if (contentsText)
 				{
-					_convertContents(contentsText, _sectionArray);
+					_convertContents(contentsText, _literalArray);
 				}
 				_textCounter++;
 				if (_textCounter >= maxLen) return;
@@ -118,10 +116,8 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 		/**
 		 * @private
 		 */
-		private function _convertContents(contentsText:Array, sectionArray:Vector.<PDFOutlineEntity>):void
+		private function _convertContents(contentsText:Array, literalArray:Vector.<Literal>):void
 		{
-			// 現在のセッション取得
-			var section:PDFOutlineEntity = sectionArray[sectionArray.length - 1];
 
 			var key:String = contentsText[0];
 			var value:String = contentsText[1];
@@ -133,6 +129,8 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 			{
 				var result:Array = regExp.exec(value);
 				
+				var tmpStr:String = "";
+				
 				while (result)
 				{
 					if (result[1] != undefined)
@@ -142,7 +140,7 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 							var str:String = result[1] as String;
 							str = str.replace("\\)", ")");
 							str = str.replace("\\(", "(");
-							section.body += str;
+							tmpStr += str;
 						}
 						else
 						{
@@ -152,7 +150,7 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 							while(resultForCmap)
 							{
 								var tmp:String = _getString(resultForCmap[1],2);
-								section.body += tmp;
+								tmpStr += tmp;
 								resultForCmap = _regExpForCmap.exec(binaryValue);
 							}
 							// CMapが埋め込まれている場合、1度で処理が終わるので、ループから抜ける
@@ -162,31 +160,27 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 					if (result.length > 2 && result[2] != undefined)
 					{
 						var tmp2:String = _getString(result[2]);
-						section.body = section.body.concat(tmp2);
+						tmpStr += tmp2;
 					}
 					
 					// \888(エスケープシーケンスに続いて8進数の3桁の場合は、今のところ変換方法が分からないので、スペースに変換)
-					section.body = section.body.replace(/\\\d\d\d/g, " ");
+					tmpStr = tmpStr.replace(/\\\d\d\d/g, " ");
 
 					result = regExp.exec(value);
 				}
+				
+				_pushLiteral(tmpStr);
+				_xIndex++;
 			}
 			else if (key == "Tm")
 			{
-				section.body += " ";
+				_xIndex++;
+				_pushLiteral(" ");
 				
 				var tmArray:Array = value.split(" ");
+				_xIndex = tmArray[4];
 				_yIndex = tmArray[5]; // y座標
 				
-				if (_currentOutline+1 < _outlinesNum && _yIndex <= _page.outlines[_currentOutline+1]["destElement"]["top"])
-				{
-					_currentOutline++;
-					section = new PDFOutlineEntity();
-					section.page = _pageCounter+1;
-					section.name = _page.outlines[_currentOutline]["title"];
-					section.body = "";
-					sectionArray.push(section);
-				}
 			}
 			else if (key == "Tf" || key == "TF")
 			{
@@ -204,6 +198,18 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 					_converter.changeCmap();
 				}
 			}
+		}
+		
+		private function _pushLiteral(value:String):void
+		{
+			var literal:Literal = new Literal();
+			literal.isOutline = false;
+			literal.sortKey = 
+					int(StringUtil.zeroPaddingLeft(_pageCounter.toString(), 4) + 
+						StringUtil.zeroPaddingLeft((DestinationUtil.MAX_TOP - _yIndex).toString(), 4) + 
+						StringUtil.zeroPaddingLeft(_xIndex.toString(), 4));
+			literal.literal = value;
+			_literalArray.push(literal);
 		}
 		
 		/**
