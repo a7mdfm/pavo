@@ -18,7 +18,7 @@
 <classEntry path="jp.co.genephics.pavo.pdf.parser.constants.PdfConst"/>
 <classEntry path="jp.co.genephics.pavo.pdf.parser.cmap.models.CMap"/>
 <classEntry path="jp.co.genephics.pavo.pdf.parser.utils.FontFactory"/>
-<classEntry path="jp.co.genephics.pavo.pdf.extractor.PDFExtractor"/>
+<classEntry path="jp.co.genephics.pavo.pdf.extractor.TextExtractor"/>
 <classEntry path="jp.co.genephics.pavo.pdf.parser.utils.PDFObjectUtil"/>
 <classEntry path="jp.co.genephics.pavo.pdf.parser.cmap.CMapMapper"/>
 <classEntry path="jp.co.genephics.pavo.pdf.parser.models.Dests"/>

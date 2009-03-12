@@ -64,7 +64,7 @@ package jp.co.genephics.pavo.pdf.extractor
 	 * 
 	 * @author genephics design, Inc.
 	 */
-	public class PDFExtractor extends PDFParser
+	public class TextExtractor extends PDFParser
 	{
 		/**
 		 * @private
@@ -80,7 +80,7 @@ package jp.co.genephics.pavo.pdf.extractor
 		 * コンストラクタ。
 		 * 
 		 */
-		public function PDFExtractor(target:IEventDispatcher = null)
+		public function TextExtractor(target:IEventDispatcher = null)
 		{
 			super(target);
 		}
