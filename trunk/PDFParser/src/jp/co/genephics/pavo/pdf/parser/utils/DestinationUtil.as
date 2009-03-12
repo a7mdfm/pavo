@@ -55,6 +55,11 @@ package jp.co.genephics.pavo.pdf.parser.utils
 	public class DestinationUtil
 	{
 		/**
+		 * top(Y座標)の上限値
+		 */
+		public static const MAX_TOP:int = 9999;
+		
+		/**
 		 * Destエントリを読み、結果をObjectで返します。<br />
 		 * 
 		 * @param Destエントリの値
@@ -86,7 +91,7 @@ package jp.co.genephics.pavo.pdf.parser.utils
 
 			ret.type = key[0];
 			ret.left = 0;
-			ret.top = int.MAX_VALUE;
+			ret.top = MAX_TOP;
 			ret.z = 0;
 			
 			switch (ret.type)
