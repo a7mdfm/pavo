@@ -193,9 +193,13 @@ package jp.co.genephics.pavo.pdf.extractor.threads
 				{
 					_converter.changeCmap(font["toUnicodeMap"]);
 				}
+				else if (font && font.hasOwnProperty("encoding") && (font["encoding"] as String).indexOf("/90ms-RKSJ-") == 0)
+				{
+					_converter.changeCmap(null, "90ms-RKSJ");
+				}
 				else
 				{
-					_converter.changeCmap();
+					_converter.changeCmap(null, "Adobe-Japan1");
 				}
 			}
 		}
