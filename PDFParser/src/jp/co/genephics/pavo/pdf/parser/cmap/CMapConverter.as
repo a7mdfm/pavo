@@ -55,10 +55,14 @@ package jp.co.genephics.pavo.pdf.parser.cmap
 	public class CMapConverter
 	{
 		[Embed(source="cmap/Adobe-Japan1-UCS2", mimeType="application/octet-stream")]
-		private var _cmapClass:Class;
+		private var _adobe_Japan1_UCS2Class:Class;
+
+		[Embed(source="cmap/90ms-RKSJ-UCS2", mimeType="application/octet-stream")]
+		private var _90ms_RKSJ_UCS2Class:Class;
 
 		private var _cmapStore:KeyValueStore;
 		private var _defaultCmapStore:KeyValueStore;
+		private var _msCmapStore:KeyValueStore;
 
 		/**
 		 * コンストラクタ
@@ -77,11 +81,17 @@ package jp.co.genephics.pavo.pdf.parser.cmap
 		 */
 		public function initialize():void
 		{
-			var cmapByteArray:ByteArrayAsset = ByteArrayAsset(new _cmapClass());
+			var cmapByteArray:ByteArrayAsset = ByteArrayAsset(new _adobe_Japan1_UCS2Class());
 			var cmapString:String = cmapByteArray.readUTFBytes(cmapByteArray.length);
 
 			_cmapStore = CMapMapper.stringToArray(cmapString);
 			_defaultCmapStore = _cmapStore;
+
+			var msByteArray:ByteArrayAsset = ByteArrayAsset(new _90ms_RKSJ_UCS2Class());
+			var msString:String = msByteArray.readUTFBytes(msByteArray.length);
+
+			_msCmapStore = CMapMapper.stringToArray(msString);
+
 		}
 		
 		/**
@@ -95,11 +105,19 @@ package jp.co.genephics.pavo.pdf.parser.cmap
 		/**
 		 * CMAPの変更
 		 */
-		public function changeCmap(value:KeyValueStore = null):void
+		public function changeCmap(value:KeyValueStore=null, encoding:String=null):void
 		{
 			if (value)
 			{
 				_cmapStore = value;
+			}
+			else if (encoding == "90ms-RKSJ")
+			{
+				_cmapStore = _msCmapStore;
+			}
+			else if (encoding == "Adobe-Japan1")
+			{
+				_cmapStore = _defaultCmapStore;
 			}
 			else
 			{
