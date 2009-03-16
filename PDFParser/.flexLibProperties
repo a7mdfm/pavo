@@ -83,6 +83,7 @@
 </includeClasses>
 <includeResources>
 <resourceEntry destPath="cmap/Adobe-Japan1-UCS2" sourcePath="cmap/Adobe-Japan1-UCS2"/>
+<resourceEntry destPath="cmap/90ms-RKSJ-UCS2" sourcePath="cmap/90ms-RKSJ-UCS2"/>
 </includeResources>
 <namespaceManifests/>
 </flexLibProperties>
